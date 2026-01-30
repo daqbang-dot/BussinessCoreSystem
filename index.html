@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BizCore Pro | Secure Enterprise</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="auth-screen" class="auth-overlay">
+        <div class="auth-card">
+            <h2>BizCore Login</h2>
+            <p>Enter credentials to access terminal</p>
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <button class="btn-primary" onclick="auth.login()">Access System</button>
+            <p id="auth-error" class="text-danger"></p>
+        </div>
+    </div>
+
+    <div class="app-container" id="main-app" style="display:none;">
+        <nav class="sidebar">
+            <div class="logo">BizCore <span>360</span></div>
+            <ul class="nav-links">
+                <li class="active" data-target="dashboard">Dashboard</li>
+                <li data-target="inventory">Inventory</li>
+                <li data-target="pos">POS System</li>
+                <li data-target="marketing">Marketing</li>
+            </ul>
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="auth.logout()">Lock Terminal</button>
+            </div>
+        </nav>
+
+        <main class="content">
+            <section id="dashboard" class="view active">
+                <header><h1>Executive Overview</h1></header>
+                <div class="stats-grid">
+                    <div class="card"><h3>Total Revenue</h3><p id="stat-sales">$0.00</p></div>
+                    <div class="card"><h3>Stock Alerts</h3><p id="stat-stock" class="text-danger">0</p></div>
+                    <div class="card"><h3>Active Leads</h3><p id="stat-leads">0</p></div>
+                </div>
+            </section>
+
+            <section id="inventory" class="view">
+                <header>
+                    <h1>Inventory</h1>
+                    <div class="actions">
+                        <input type="text" id="inv-search" placeholder="Search SKU/Name..." oninput="ui.renderInventory()">
+                        <button class="btn-secondary" onclick="utils.exportCSV()">Export CSV</button>
+                    </div>
+                </header>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Product</th><th>SKU</th><th>Stock</th><th>Price</th></tr>
+                        </thead>
+                        <tbody id="inventory-list"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="pos" class="view">
+                <div class="pos-grid">
+                    <div class="card">
+                        <header>
+                            <h2>Terminal</h2>
+                            <input type="text" id="pos-search" placeholder="Search items..." oninput="ui.renderPOS()">
+                        </header>
+                        <div id="pos-item-grid" class="item-grid"></div>
+                    </div>
+                    <div class="card pos-cart">
+                        <h2>Current Order</h2>
+                        <div id="cart-list" class="cart-items"></div>
+                        <div class="cart-total">
+                            <div class="total-row"><span>Total</span><span id="cart-total-amount">$0.00</span></div>
+                            <button class="btn-success" onclick="pos.checkout()">COMPLETE & PRINT</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="marketing" class="view">
+                <header><h1>CRM Pipeline</h1></header>
+                <div class="marketing-layout">
+                    <div class="card lead-form">
+                        <h3>Capture Lead</h3>
+                        <input type="text" id="lead-name" placeholder="Name">
+                        <input type="email" id="lead-email" placeholder="Email">
+                        <button class="btn-primary" onclick="marketing.addLead()">Save</button>
+                    </div>
+                    <div class="kanban" id="lead-display"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="receipt-print" class="print-only"></div>
+</body>
+<script src="app.js"></script>
+</html>
